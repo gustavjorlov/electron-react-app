@@ -1,18 +1,15 @@
 import React from "react";
 
-const List = ({ items }) => {
-  if (!items || items.length === 0) {
-    return <p>No items</p>;
-  }
+const List = ({ children }) => {
+  return <div>{children}</div>;
+};
+
+const ListItem = ({ id, children }) => {
   return (
-    <div>
-      {items.map((item) => (
-        <div key={item.name} style={{ display: "flex" }}>
-          {item.name}
-        </div>
-      ))}
+    <div key={id} style={{ display: "flex" }}>
+      {children}
     </div>
   );
 };
 
-export default List;
+export { List, ListItem };

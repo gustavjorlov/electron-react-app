@@ -1,6 +1,6 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import List from "./components/List";
+import { List, ListItem } from "./components/List";
 
 const useThings = () => {
   const [things, setThings] = useState([]);
@@ -17,7 +17,11 @@ function App() {
   return (
     <div className="App">
       <h1>Things</h1>
-      <List items={things} />
+      <List>
+        {things.map((thing) => (
+          <ListItem id={thing.name}>{thing.name}</ListItem>
+        ))}
+      </List>
     </div>
   );
 }
