@@ -1,23 +1,23 @@
-import logo from "./logo.svg";
 import "./App.css";
+import { useEffect, useState } from "react";
+import List from "./components/List";
+
+const useThings = () => {
+  const [things, setThings] = useState([]);
+  useEffect(() => {
+    window.electronAPI.listThings().then((_things) => {
+      setThings(_things);
+    });
+  }, []);
+  return things;
+};
 
 function App() {
+  const things = useThings();
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Things</h1>
+      <List items={things} />
     </div>
   );
 }

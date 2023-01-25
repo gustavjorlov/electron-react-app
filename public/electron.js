@@ -1,34 +1,25 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
+const { getThings } = require("../src/backend/api");
 
 let mainWindow;
 
-const handleOnAppReady = () => {
-  createWindow();
+const retryLoading = (mainWindow, url) => {
+  mainWindow.loadURL(url).catch((e) => {
+    setTimeout(() => retryLoading(mainWindow, url), 500);
+  });
 };
 
 const createWindow = async () => {
-  const windowOptions = {
+  mainWindow = new BrowserWindow({
     minWidth: 575,
     minHeight: 145,
     darkTheme: true,
     webPreferences: {
-      preload: path.join(__dirname, "..", "/src/js/view/preload.js"),
+      preload: path.join(__dirname, "preload.js"),
     },
-  };
-
-  mainWindow = new BrowserWindow(windowOptions);
-
-  mainWindow.loadURL(
-    // isDev
-    "http://localhost:3000"
-    // `file://${path.join(__dirname, "../build/index.html")}`
-  );
-
-  mainWindow.on("close", () => {
-    const argObj = { type: "QUIT" };
-    mainWindow.webContents.send("backendMessages", argObj);
   });
+  retryLoading(mainWindow, "http://localhost:3000");
 
   mainWindow.on("closed", () => {
     mainWindow = null;
@@ -38,12 +29,13 @@ const createWindow = async () => {
 };
 
 const quitApplication = () => {
-  // if (process.platform !== 'darwin') {
   app.quit();
-  // }
 };
 
-app.on("ready", handleOnAppReady);
+app.on("ready", () => {
+  createWindow();
+  ipcMain.handle("list:things", getThings);
+});
 
 app.on("activate", () => {
   if (mainWindow === null) {
