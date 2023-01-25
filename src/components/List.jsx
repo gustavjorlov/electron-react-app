@@ -4,12 +4,8 @@ const List = ({ children }) => {
   return <div>{children}</div>;
 };
 
-const ListItem = ({ id, children }) => {
-  return (
-    <div key={id} style={{ display: "flex" }}>
-      {children}
-    </div>
-  );
+const ListItem = ({ children }) => {
+  return <div style={{ display: "flex" }}>{children}</div>;
 };
 
 export { List, ListItem };
