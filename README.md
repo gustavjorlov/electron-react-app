@@ -4,10 +4,6 @@
 
 In the project directory, you can run:
 
-### `npm dev1`
+### `npm dev`
 
-Runs the React app in the development mode.
-
-### `npm dev2`
-
-Runs the Electron app, wait for the React app to succeed before running this
+Runs the app in the development mode.
